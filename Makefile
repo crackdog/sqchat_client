@@ -18,9 +18,9 @@ $(PROG): classes
 
 classes: $(CLASSES:.java=.class)
 
-jar: $(PROG) $(JAR)
+jar: $(JAR)
 
-$(JAR): $(RPOG)
+$(JAR): $(RPOG) classes
 	jar -cvfm $(JAR) $(MFILE) $(CLASSES:.java=.class)
 
 .PHONY: clean
