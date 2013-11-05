@@ -11,9 +11,8 @@ MFILE = Manifest.txt
 
 CLASSES = \
         Sqchat.java \
-        Connection.java #\
-        #Library.java \
-        #Main.java 
+        Connection.java \
+        Encryption.java 
 
 $(PROG): classes
 
