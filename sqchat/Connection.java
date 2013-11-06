@@ -1,3 +1,4 @@
+package sqchat;
 
 import java.net.Socket;
 
@@ -7,7 +8,7 @@ public class Connection {
     Encryption crypt = new Encryption();
 
     public Connection() {
-        System.out.println("---Connection constructor---");
+        System.out.println("===Connection constructor===");
     }
 
     public boolean sendToServer(String msg) {

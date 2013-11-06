@@ -1,3 +1,4 @@
+import sqchat.Connection;
 
 public class Sqchat {
 

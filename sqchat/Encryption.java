@@ -1,3 +1,4 @@
+package sqchat;
 
 public class Encryption {
 
