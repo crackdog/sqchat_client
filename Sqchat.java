@@ -9,8 +9,10 @@ public class Sqchat {
         System.out.println(test);
         System.out.println(crypt.decryptMsg(test));
         
-        test = "dGVzdAoA";
-        System.out.println(test);
-        System.out.println(crypt.decryptMsg(test));
+        test = "Hello World!!!";
+        System.out.println(crypt.base64encode(test.getBytes()));
+        System.out.println(crypt.encode(test));
+        //System.out.println(crypt.decryptMsg(test));
+        //System.out.println(crypt.decode(test));
     }
 }
