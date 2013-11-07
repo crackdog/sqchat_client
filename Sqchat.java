@@ -8,5 +8,9 @@ public class Sqchat {
         String test = crypt.encryptMsg("Hello World!");
         System.out.println(test);
         System.out.println(crypt.decryptMsg(test));
+        
+        test = "dGVzdAoA";
+        System.out.println(test);
+        System.out.println(crypt.decryptMsg(test));
     }
 }
