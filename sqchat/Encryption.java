@@ -16,16 +16,31 @@ public class Encryption {
     }
 
     public Encryption(String base64key) {
-        key = base64decode(base64key);
+        key = decode(base64key).getBytes();
         keylen = key.length;
+        
+        keylen = 32;
+        key = new byte[keylen];
+
+        for (int i = 0; i < keylen; i++) {
+            key[i] = (byte) 0xf;
+        }
     }
 
     public String decryptMsg(String msg) {
-        return new String(base64decode(msg));
+        return xor_crypt(decode(msg));
     }
 
     public String encryptMsg(String msg) {
-        return encode(xor_crypt(msg));
+        return base64encode(xor_crypt(msg).getBytes());
+    }
+    
+    public String base64decodeMsg(String msg) {
+        return new String(base64decode(msg));
+    }
+    
+    public String base64encodeMsg(String msg) {
+        return base64encode(msg.getBytes());
     }
 
     private byte[] xor_crypt(byte[] bytes) {
@@ -52,16 +67,16 @@ public class Encryption {
         return new String(xor_crypt(s.getBytes()));
     }
 
-    public String base64encode(byte[] rawdata) {
+    private String base64encode(byte[] rawdata) {
         String base64str, padStr;
         int padCount, datalength, i, tmp;
         byte[] data;
-        
+
         base64str = "";
         padStr = "";
-        
+
         datalength = rawdata.length;
-        
+
         padCount = rawdata.length % 3;
         if (padCount > 0) {
             while (padCount < 3) {
@@ -70,7 +85,7 @@ public class Encryption {
                 padCount++;
             }
         }
-        
+
         data = new byte[datalength];
 
         for (i = 0; i < datalength; i++) {
@@ -86,45 +101,16 @@ public class Encryption {
             tmp += (byte) data[i] << 16;
             tmp += (byte) data[i + 1] << 8;
             tmp += (byte) data[i + 2];
-            
+
             base64str += base64chars.charAt((tmp >> 18) & 63);
             base64str += base64chars.charAt((tmp >> 12) & 63);
             base64str += base64chars.charAt((tmp >> 6) & 63);
             base64str += base64chars.charAt(tmp & 63);
         }
-        
+
         base64str = base64str.substring(0, base64str.length() - padStr.length()) + padStr;
 
         return base64str;
-    }
-
-    public String encode(String s) {
-        // the result/encoded string, the padding string, and the pad count
-        String r = "", p = "";
-        int c = s.length() % 3;
-
-        // add a right zero pad to make this string a multiple of 3 characters
-        if (c > 0) {
-            for (; c < 3; c++) {
-                p += "=";
-                s += "\0";
-            }
-        }
-        for (c = 0; c < s.length(); c += 3) {
-            //if (c > 0 && (c / 3 * 4) % 76 == 0)
-            //    r += "\r\n";
-
-            // these three 8-bit (ASCII) characters become one 24-bit number
-            int n = (s.charAt(c) << 16) + (s.charAt(c + 1) << 8)
-                    + (s.charAt(c + 2));
-
-            int n1 = (n >> 18) & 63, n2 = (n >> 12) & 63, n3 = (n >> 6) & 63, n4 = n & 63;
-
-            r += "" + base64chars.charAt(n1) + base64chars.charAt(n2)
-                    + base64chars.charAt(n3) + base64chars.charAt(n4);
-        }
-
-        return r.substring(0, r.length() - p.length()) + p;
     }
 
     private byte[] base64decode(String encodedDataString) {
@@ -167,7 +153,7 @@ public class Encryption {
         return decodedData;
     }
 
-    public String decode(String s) {
+    private String decode(String s) {
 
         //I copied the code from 
         //https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#Java
