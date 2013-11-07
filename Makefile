@@ -1,5 +1,5 @@
 JC = javac
-JFLAGS = #-g
+JFLAGS = #-verbose
 
 PROG = Sqchat
 JAR = sqchat.jar
