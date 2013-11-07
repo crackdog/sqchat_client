@@ -57,40 +57,48 @@ public class Encryption {
         int padCount, datalength, i, tmp;
         byte[] data;
         
-        datalength = rawdata.length + (rawdata.length % 3);
-        data = new byte[datalength];
+        base64str = "";
+        padStr = "";
         
-        for(i = 0; i < datalength; i++) {
-            if(i < rawdata.length) {
+        datalength = rawdata.length;
+        
+        padCount = rawdata.length % 3;
+        if (padCount > 0) {
+            while (padCount < 3) {
+                padStr += '=';
+                datalength++;
+                padCount++;
+            }
+        }
+        
+        data = new byte[datalength];
+
+        for (i = 0; i < datalength; i++) {
+            if (i < rawdata.length) {
                 data[i] = rawdata[i];
             } else {
                 data[i] = '\0';
             }
         }
-        
-        base64str = "";
-        padStr = "";
-        
-        padCount = rawdata.length % 3;
-        if(padCount > 0) {
-            while(padCount < 3) {
-                padStr += '=';
-                padCount++;
-            }
-        }
-        
-        for(i = 0; i < data.length; i+=3) {
+
+        for (i = 0; i < datalength; i += 3) {
+            tmp = 0;
+            tmp += (byte) data[i] << 16;
+            tmp += (byte) data[i + 1] << 8;
+            tmp += (byte) data[i + 2];
             
+            base64str += base64chars.charAt((tmp >> 18) & 63);
+            base64str += base64chars.charAt((tmp >> 12) & 63);
+            base64str += base64chars.charAt((tmp >> 6) & 63);
+            base64str += base64chars.charAt(tmp & 63);
         }
         
+        base64str = base64str.substring(0, base64str.length() - padStr.length()) + padStr;
+
         return base64str;
     }
 
     public String encode(String s) {
-
-        //I copied the code from 
-        //https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#Java
-
         // the result/encoded string, the padding string, and the pad count
         String r = "", p = "";
         int c = s.length() % 3;
@@ -102,12 +110,7 @@ public class Encryption {
                 s += "\0";
             }
         }
-
-        // increment over the length of the string, three characters at a time
         for (c = 0; c < s.length(); c += 3) {
-
-            // we add newlines after every 76 output characters, according to
-            // the MIME specs
             //if (c > 0 && (c / 3 * 4) % 76 == 0)
             //    r += "\r\n";
 
@@ -115,11 +118,8 @@ public class Encryption {
             int n = (s.charAt(c) << 16) + (s.charAt(c + 1) << 8)
                     + (s.charAt(c + 2));
 
-            // this 24-bit number gets separated into four 6-bit numbers
             int n1 = (n >> 18) & 63, n2 = (n >> 12) & 63, n3 = (n >> 6) & 63, n4 = n & 63;
 
-            // those four 6-bit numbers are used as indices into the base64
-            // character list
             r += "" + base64chars.charAt(n1) + base64chars.charAt(n2)
                     + base64chars.charAt(n3) + base64chars.charAt(n4);
         }
