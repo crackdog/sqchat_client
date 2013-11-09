@@ -21,13 +21,12 @@ public class Encryption {
     }
 
     public String decryptMsg(String msg) {
-        System.out.println("decryptl: " + msg.length());
-        return xor_crypt(base64decodeMsg(msg));
+        //System.out.println("decryptl: " + msg.length());
+        return new String(xor_crypt(base64decode(msg)));
     }
 
     public String encryptMsg(String msg) {
-        System.out.println("encryptl: " + msg.length());
-        return base64encode(xor_crypt(msg).getBytes());
+        return base64encode(xor_crypt(msg.getBytes()));
     }
 
     public String base64decodeMsg(String msg) {
@@ -41,11 +40,13 @@ public class Encryption {
     private byte[] xor_crypt(byte[] bytes) {
         int i, j;
 
+        //System.out.print(new String(bytes).replaceAll("[^" + base64chars + "=]", ".") + " -> ");
+
         i = 0;
         j = 0;
 
         while (i < bytes.length) {
-            if(j >= key.length) {
+            if (j >= key.length) {
                 System.out.println(j + " ... " + key.length + " --- " + keylen);
                 j = 0;
             }
@@ -58,11 +59,9 @@ public class Encryption {
             }
         }
 
-        return bytes;
-    }
+        //System.out.println(new String(bytes).replaceAll("[^" + base64chars + "=]", "."));
 
-    private String xor_crypt(String s) {
-        return new String(xor_crypt(s.getBytes()));
+        return bytes;
     }
 
     private String base64encode(byte[] rawdata) {
@@ -123,14 +122,19 @@ public class Encryption {
         encodedDataLength = encodedDataString.length();
         encodedData = encodedDataString.getBytes();
 
+        padCount = 0;
         //replace padding chars with a pad that decodes to zero ("A")
         if (encodedData[encodedDataLength - 1] == '=') {
             encodedData[encodedDataLength - 1] = 'A';
+            padCount = 1;
 
             if (encodedData[encodedDataLength - 2] == '=') {
                 encodedData[encodedDataLength - 2] = 'A';
+                padCount = 2;
             }
         }
+
+        //System.out.println(new String(encodedData));
 
         decodedDataLength = encodedDataLength / 4 * 3 + 1;
         decodedData = new byte[decodedDataLength];
@@ -147,6 +151,16 @@ public class Encryption {
             decodedData[j + 1] = (byte) ((tmp >> 8) & 0xff);
             decodedData[j + 2] = (byte) (tmp & 0xff);
         }
+
+        //System.out.println(new String(decodedData).replaceAll("\0", "."));
+
+        byte[] tmpdata = new byte[decodedDataLength - padCount - 1];
+
+        for (i = 0; i < decodedDataLength - padCount - 1; i++) {
+            tmpdata[i] = decodedData[i];
+        }
+        decodedData = tmpdata;
+
 
         return decodedData;
     }
