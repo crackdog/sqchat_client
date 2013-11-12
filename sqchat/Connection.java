@@ -5,10 +5,14 @@ import java.net.Socket;
 public class Connection {
 
     private Socket server;
-    Encryption crypt = new Encryption();
+    Encryption crypt;
 
     public Connection() {
         System.out.println("===Connection constructor===");
+    }
+    
+    public void setEncryption(Encryption c) {
+        this.crypt = c;
     }
 
     public boolean sendToServer(String msg) {
