@@ -8,24 +8,25 @@ public class Connection {
     Encryption crypt;
 
     public Connection() {
-        System.out.println("===Connection constructor===");
     }
-    
+
     public void setEncryption(Encryption c) {
         this.crypt = c;
     }
 
     public boolean sendToServer(String msg) {
-        msg = crypt.encryptMsg(msg);
-        
+        if (crypt != null) {
+            msg = crypt.encryptMsg(msg);
+        }
+
         System.out.println("send encrypted msg: '" + msg + "'");
-        
+
         return false;
     }
 
     public String recvFromServer() {
         String msg = "";
-        
+
         msg = crypt.decryptMsg(msg);
         return msg;
     }
