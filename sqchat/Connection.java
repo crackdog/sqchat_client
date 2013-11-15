@@ -32,6 +32,16 @@ public class Connection {
         return true;
     }
 
+    public void close() {
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                System.err.println(e);
+            }
+        }
+    }
+
     public void setEncryption(Encryption c) {
         this.crypt = c;
     }
@@ -39,6 +49,12 @@ public class Connection {
     public boolean sendToServer(String msg) {
         if (crypt != null) {
             msg = crypt.encryptMsg(msg);
+        }
+        
+        System.out.println("send encrypted msg: '" + msg + "'");
+        
+        if(!msg.endsWith("\n")) {
+            msg += "\n";
         }
 
         if (serverSocket != null) {
@@ -55,15 +71,38 @@ public class Connection {
             }
         }
 
-        System.out.println("send encrypted msg: '" + msg + "'");
-
         return false;
     }
 
     public String recvFromServer() {
-        String msg = "";
+        if (serverSocket != null) {
+            try {
+                BufferedReader bufferedReader =
+                        new BufferedReader(
+                        new InputStreamReader(
+                        serverSocket.getInputStream()));
 
-        msg = crypt.decryptMsg(msg);
-        return msg;
+                char[] msgbuffer = new char[4096];
+                int msglen;
+
+                msglen = bufferedReader.read(msgbuffer, 0, 4096);
+
+                String msg = new String(msgbuffer, 0, msglen);
+
+                if(crypt != null) {
+                    msg = crypt.decryptMsg(msg);
+                }
+                
+                return msg;
+            } catch (IOException e) {
+                System.err.println("no connection to server...");
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        //msg = crypt.decryptMsg(msg);
+        //return msg;
     }
 }
