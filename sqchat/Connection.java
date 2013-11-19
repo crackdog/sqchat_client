@@ -101,8 +101,5 @@ public class Connection {
         } else {
             return null;
         }
-
-        //msg = crypt.decryptMsg(msg);
-        //return msg;
     }
 }
