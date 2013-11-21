@@ -36,6 +36,10 @@ public class Connection {
         return serverSocket != null;
     }
 
+    public boolean isEncrypted() {
+        return crypt != null;
+    }
+
     public void close() {
         if (serverSocket != null) {
             try {
@@ -78,7 +82,7 @@ public class Connection {
         return false;
     }
 
-    public String recvFromServer() {
+    public String recvFromServer() { //this function is blocking...
         if (serverSocket != null) {
             try {
                 BufferedReader bufferedReader =
