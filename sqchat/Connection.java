@@ -32,6 +32,10 @@ public class Connection {
         return true;
     }
 
+    public boolean isConnected() {
+        return serverSocket != null;
+    }
+
     public void close() {
         if (serverSocket != null) {
             try {
