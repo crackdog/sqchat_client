@@ -39,5 +39,6 @@ Thumbs.db
 
 # Other files #
 ###############
-.key
+*.key
+*.swp
 
