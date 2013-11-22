@@ -16,17 +16,7 @@ public class Sqchat {
         System.out.println(con.recvFromServer());
 
         con.close();
-
-        /*con.sendToServer("Hello World!");
-        con.setEncryption(crypt);
-        con.sendToServer("Hello World!");
         
-        for (i = 0; i < args.length; i++) {
-        con.sendToServer(args[i]);
-        }*/
 
-        /*String test = crypt.encryptMsg("Hello World!");
-        System.out.println(test);
-        System.out.println(crypt.decryptMsg(test));*/
     }
 }
