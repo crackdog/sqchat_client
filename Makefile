@@ -13,7 +13,8 @@ CLASSES = \
         Sqchat.java \
         sqchat/Connection.java \
         sqchat/Encryption.java \
-        sqchat/Client.java  
+        sqchat/Client.java \
+        sqchat/Contact.java 
 
 $(PROG): classes
 
