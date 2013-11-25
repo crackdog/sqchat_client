@@ -14,7 +14,8 @@ CLASSES = \
         sqchat/Connection.java \
         sqchat/Encryption.java \
         sqchat/Client.java \
-        sqchat/Contact.java 
+        sqchat/Contact.java \
+        gui/Frame.java 
 
 $(PROG): classes
 
@@ -27,5 +28,5 @@ $(JAR): $(RPOG) classes
 
 .PHONY: clean
 clean:
-	rm -f *.class $(JAR)
+	rm -f $(CLASSES:.java=.class) $(JAR)
 
