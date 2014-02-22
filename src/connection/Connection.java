@@ -1,4 +1,4 @@
-package sqchat;
+package connection;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,7 +12,10 @@ public class Connection {
     private Encryption crypt;
 
     public Connection() {
-        
+        serverIp = "";
+        serverPort = 0;
+        serverSocket = null;
+        crypt = null;
     }
 
     public boolean connect(String ip) {

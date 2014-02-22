@@ -1,4 +1,4 @@
-package sqchat;
+package connection;
 
 public class Encryption {
 

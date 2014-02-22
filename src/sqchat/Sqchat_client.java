@@ -1,6 +1,8 @@
 package sqchat;
 
-import gui.*;
+import connection.Encryption;
+import connection.Connection;
+//import gui.*;
 
 public class Sqchat_client {
 
@@ -17,14 +19,6 @@ public class Sqchat_client {
 
         con.close();
         
-        Frame test = new Frame();
-        test.init();
-        Client testclient = new Client();
         
-        testclient.printContacts();
-        
-        //chat class test
-        Chat testchat = new Chat();
-        testchat.perform_action(Chat.Enter);
     }
 }
