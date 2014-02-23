@@ -2,8 +2,10 @@ package sqchat;
 
 public class Conversation implements IConversation {
     
-    public Conversation() {
-        
+    private Contact contact;
+    
+    public Conversation(IContact contact) {
+        this.contact = (Contact) contact;
     }
 
     @Override
