@@ -1,6 +1,7 @@
 package sqchat;
 
 import gui.IConversationFrame;
+import java.util.ArrayList;
 
 /*
  * Todo: printAllMsg() and save every msg in an ArrayList...
@@ -11,11 +12,13 @@ public class Conversation implements IConversation {
     private Contact user, contact;
     private Chat chat;
     private IConversationFrame frame;
+    ArrayList<IMessage> msgList;
     
     public Conversation(IContact user, IContact contact, Chat chat) {
         this.user = (Contact) user;
         this.contact = (Contact) contact;
         this.chat = chat;
+        this.msgList = new ArrayList<>();
     }
     
     public String getFrameName() {
@@ -28,18 +31,24 @@ public class Conversation implements IConversation {
     }
 
     @Override
-    public void inputMsg(String msg) {
+    public void inputMsg(String msg) { //message that comes from user...
         //create full message
-        String m;
+        String mtmp;
+        Message m;
         
-        m = "sendtextmessage targetmode=1 target=";
-        m += contact.getClientId();
-        m += " msg=";
-        m += this.escapeSpaces(msg);
-        m += "\n";
+        mtmp = "sendtextmessage targetmode=1 target=";
+        mtmp += contact.getClientId();
+        mtmp += " msg=";
+        mtmp += this.escapeSpaces(msg);
+        mtmp += "\n";
+        
+        m = new Message(mtmp, true);
+        
+        //store message to msgList
+        msgList.add((IMessage) m);
         
         //send message
-        if(chat.sendMsgToServer(m)) {
+        if(chat.sendMsgToServer(mtmp)) {
             //no error
         } else {
             //error
@@ -50,13 +59,19 @@ public class Conversation implements IConversation {
         //recreate text message
         String msg;
         String tmp[];
+        Message m;
         
         tmp = fullMsg.split("msg=");
         msg = this.reEscapeSpaces(tmp[tmp.length-1]);
         
+        m = new Message(msg, false);
+        
+        //store message to msgList
+        msgList.add((IMessage) m);
+        
         //print message in conversation frame
         if(frame != null) {
-            frame.printMsg(msg);
+            frame.printMsg(m);
         }
     }
     
@@ -71,6 +86,5 @@ public class Conversation implements IConversation {
     @Override
     public void closeConversation() {
         frame.closeFrame();
-    }
-    
+    }    
 }
