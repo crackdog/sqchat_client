@@ -1,11 +1,18 @@
 package connection;
 
+/**
+ * This class represents the encryption of a connection.
+ * @author Florian Kahllund
+ */
 public class Encryption {
 
     private final static String base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     private byte key[];
     private int keylen;
 
+    /**
+     * standart constructor that creates a 32 byte random key
+     */
     public Encryption() {
         keylen = 32;
         key = new byte[keylen];
@@ -15,24 +22,48 @@ public class Encryption {
         }
     }
 
+    /**
+     * constructor that becomes a key in base64 code
+     * @param base64key the key in base64 code
+     */
     public Encryption(String base64key) {
         key = base64decode(base64key);
         keylen = key.length;
     }
 
+    /**
+     * decrypts a given message
+     * @param msg the message to be decrypted
+     * @return the decrypted message
+     */
     public String decryptMsg(String msg) {
         //System.out.println("decryptl: " + msg.length());
         return new String(xor_crypt(base64decode(msg)));
     }
 
+    /**
+     * encrypts a given message
+     * @param msg the message to be encrypted
+     * @return the encrypted message
+     */
     public String encryptMsg(String msg) {
         return base64encode(xor_crypt(msg.getBytes()));
     }
 
+    /**
+     * decodes a given message in base64 code into clear text
+     * @param msg the message in base64 code
+     * @return the message in clear text
+     */
     public String base64decodeMsg(String msg) {
         return new String(base64decode(msg));
     }
 
+    /**
+     * encodes a given message into base64 code
+     * @param msg the message to be base64 coded
+     * @return the message in base64 code
+     */
     public String base64encodeMsg(String msg) {
         return base64encode(msg.getBytes());
     }

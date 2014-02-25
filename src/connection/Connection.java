@@ -3,6 +3,10 @@ package connection;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * This class represents the connection to the server.
+ * @author Florian Kahllund
+ */
 public class Connection {
 
     private final int stdPort = 6666;
@@ -11,6 +15,9 @@ public class Connection {
     private Socket serverSocket;
     private Encryption crypt;
 
+    /**
+     * standart constructor
+     */
     public Connection() {
         serverIp = "";
         serverPort = 0;
@@ -18,10 +25,21 @@ public class Connection {
         crypt = null;
     }
 
+    /**
+     * 
+     * @param ip the ip-adress of the server
+     * @return Returnt the connection status.
+     */
     public boolean connect(String ip) {
         return connect(ip, stdPort);
     }
 
+    /**
+     * 
+     * @param ip the ip-adress of the server
+     * @param port the port of the server
+     * @return Returns the connection status.
+     */
     public boolean connect(String ip, int port) {
         serverIp = ip;
         serverPort = port;
@@ -36,14 +54,25 @@ public class Connection {
         return true;
     }
 
+    /**
+     * 
+     * @return Returns the connection status.
+     */
     public boolean isConnected() {
         return serverSocket != null;
     }
 
+    /**
+     * 
+     * @return Returns the encryption status.
+     */
     public boolean isEncrypted() {
         return crypt != null;
     }
 
+    /**
+     * Close the socket connection.
+     */
     public void close() {
         if (serverSocket != null) {
             try {
@@ -54,10 +83,19 @@ public class Connection {
         }
     }
 
+    /**
+     * Sets the Encryption.
+     * @param c the Encryption to use
+     */
     public void setEncryption(Encryption c) {
         this.crypt = c;
     }
 
+    /**
+     * Sends a message to the server
+     * @param msg Themessage to be sent.
+     * @return Returns if the operation was successfull.
+     */
     public boolean sendToServer(String msg) {
         if (crypt != null) {
             msg = crypt.encryptMsg(msg);
@@ -86,6 +124,11 @@ public class Connection {
         return false;
     }
 
+    /**
+     * <p> Receives a message from the server. </p>
+     * <p> This method is blocking. </p>
+     * @return Returns the received message as a string.
+     */
     public String recvFromServer() { //this function is blocking...
         if (serverSocket != null) {
             try {
