@@ -3,19 +3,14 @@ package sqchat;
 import gui.IConversationFrame;
 import java.util.ArrayList;
 
-/*
- * Todo: printAllMsg() and save every msg in an ArrayList...
- */
-
 public class Conversation implements IConversation {
     
-    private Contact user, contact;
+    private Contact contact;
     private Chat chat;
     private IConversationFrame frame;
     ArrayList<IMessage> msgList;
     
-    public Conversation(IContact user, IContact contact, Chat chat) {
-        this.user = (Contact) user;
+    public Conversation(IContact contact, Chat chat) {
         this.contact = (Contact) contact;
         this.chat = chat;
         this.msgList = new ArrayList<>();
@@ -28,6 +23,10 @@ public class Conversation implements IConversation {
     public void setFrame(IConversationFrame frame) {
         this.frame = frame;
         this.frame.setConversation((IConversation) this);
+    }
+    
+    public Contact getContact() {
+        return contact;
     }
 
     @Override
@@ -72,6 +71,14 @@ public class Conversation implements IConversation {
         //print message in conversation frame
         if(frame != null) {
             frame.printMsg(m);
+        }
+    }
+    
+    public void printAllMsg() {
+        if(frame != null) {
+            frame.printAllMsg(msgList);
+        } else {
+            //error
         }
     }
     

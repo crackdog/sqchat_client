@@ -6,6 +6,6 @@ package gui;
  */
 public interface IContactListFrame {
     
-    IConversationFrame createNewConversationFrame(String name);
+    IConversationFrame createNewConversationFrame(IConversationFrame cf);
     
 }
