@@ -92,11 +92,12 @@ public class Connection {
     }
 
     /**
-     * Sends a message to the server
+     * Sends a message to the server. <br/>
+     * Is synchronized to avoid sending two things at the same time.
      * @param msg Themessage to be sent.
      * @return Returns if the operation was successfull.
      */
-    public boolean sendToServer(String msg) {
+    public synchronized boolean sendToServer(String msg) {
         if (crypt != null) {
             msg = crypt.encryptMsg(msg);
         }
