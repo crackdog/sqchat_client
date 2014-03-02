@@ -20,5 +20,7 @@ public class Sqchat_client {
         con.close();
         
         Conversation c = new Conversation(null, null);
+        
+        
     }
 }

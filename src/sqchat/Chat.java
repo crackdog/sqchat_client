@@ -52,6 +52,32 @@ public class Chat implements IContactList, Runnable {
     public boolean sendMsgToServer(String msg) {
         return con.sendToServer(msg);
     }
+    
+    private void createContacts(String clientlist) {
+        String clients[];
+        ArrayList<Contact> offline = new ArrayList<>();
+        Contact tmp;
+        
+        clients = clientlist.split("|");
+        
+        //check for every contact in contacts if it is still in clients and 
+        //check if every contact in clients is in contacts
+        offline = contacts;
+        contacts = new ArrayList<>();
+        
+        for(int i = 0; i < clients.length; i++) {
+            tmp = new Contact(clients[i]);
+            contacts.add(tmp);
+        }
+        
+        offline.removeAll(contacts);
+        
+        if(!offline.isEmpty()) {
+            //there are offline contacts...
+            
+        }
+        
+    }
 
     @Override
     public void run() {
